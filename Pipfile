@@ -1,0 +1,27 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+langchain-ollama = "*"
+spacy = "*"
+langgraph = "*"
+selenium = "*"
+webdriver-manager = "*"
+lxml = "*"
+dateparser = "*"
+playwright = "*"
+nest-asyncio = "*"
+beautifulsoup4 = "*"
+bs4 = "*"
+streamlit = "*"
+crewai = "*"
+crewai-tools = "*"
+langchain-groq = "*"
+langchain-core = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.12"

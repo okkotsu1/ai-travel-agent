@@ -1,0 +1,31 @@
+Here are three flight options based on your criteria:
+
+**Option 1**
+
+* **Airline:** IndiGo, Virgin Atlantic
+* **Price:** ₹43,825
+* **Duration:** 18 hr 50 min
+* **Layovers:** 1
+* **Departure:** 9:55 PM
+* **Arrival:** 12:15 PM
+* **Booking Link:** https://www.virginatlantic.com/en-IN?gclid=ADowPOJyTu7TXniBYjMcaSZZoVbinU13ledSgVoNmcFvSstrO0P2pV7DORLIYWXyPdb5hWPrMMcxvb0ox2KD5ZNodLjLcGvnxlf5uKmMUB8bfXkXopU&gclsrc=gf
+
+**Option 2**
+
+* **Airline:** IndiGo, Virgin Atlantic
+* **Price:** ₹43,863
+* **Duration:** 14 hr 55 min
+* **Layovers:** 1
+* **Departure:** 8:55 PM
+* **Arrival:** 7:20 AM
+* **Booking Link:** https://www.google.com/travel/flights/booking?tfs=CBwQAhpsEgoyMDI1LTEwLTAxIiAKA1ZOUxIKMjAyNS0xMC0wMRoDREVMKgI2RTIEMjM5NSIfCgNERUwSCjIwMjUtMTAtMDIaA0xIUioCVlMyAzMwM2oNCAISCS9tLzAxajkyMnIMCAISCC9tLzA0anBsQAFIAXABggELCP___________wGYAQI&tfu=CnRDalJJUms1b2QxSmtPRGhWT1d0QlEwSlpZMmRDUnkwdExTMHRMUzB0YzIxaVkzTXlNRUZCUVVGQlIyZ3lSRVJuUW1KWlh6aEJFZ3cyUlRJek9UVjhWbE16TURNYUN3algxZ0lRQUJvRFNVNVNPQnh3cEk4RBICCAAiAA
+
+**Option 3**
+
+* **Airline:** IndiGo, Virgin Atlantic
+* **Price:** ₹43,886
+* **Duration:** 22 hr 30 min
+* **Layovers:** 1
+* **Departure:** 10:15 PM
+* **Arrival:** 4:15 PM
+* **Booking Link:** https://www.kiwi.com/en/search/results/lal-bahadur-shastri-international-varanasi-india/heathrow-london-united-kingdom/2025-10-01/no-return?currency=inr&user_id=688a5197c96d158fd11ca4666fbdd4c1&deeplink_uuid=0a56e199-505c-4983-a9ce-563d71ae5675&passengers=1&track_click=False&language=en&session_identifier=YbBk9Zoa8kzQyPJPaEDvG9ds5%2Bazz9t8vsNCU5jE5sg%3D
