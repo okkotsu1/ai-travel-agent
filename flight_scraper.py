@@ -145,7 +145,7 @@ async def scrape_google_flights(url):
                 except Exception as e:
                     safe_print(f"[⚠️] Could not find or click Continue: {e}")
                 finally:
-                    context.off("page", on_new_page)
+                    context.remove_listener("page", on_new_page)
 
                 # ✅ Go back by reloading original URL
                 try:
