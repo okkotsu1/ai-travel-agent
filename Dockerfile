@@ -1,7 +1,7 @@
-# Base image
-FROM python:3.10-slim
+# ✅ Use Playwright base image with Chromium and all dependencies pre-installed
+FROM mcr.microsoft.com/playwright/python:v1.44.0-jammy
 
-# Environment setup
+# Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     GROQ_API_KEY=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 \
@@ -9,28 +9,20 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     OPENAI_API_KEY=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 \
     OPENROUTER_API_KEY=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
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    curl wget unzip gnupg xvfb \
-    libnss3 libxss1 libappindicator3-1 libasound2 \
-    libatk-bridge2.0-0 libgtk-3-0 libgbm-dev chromium chromium-driver \
-    && rm -rf /var/lib/apt/lists/*
-
-# Set work directory
+# Set working directory
 WORKDIR /app
 COPY . /app
 
-# Create required folder explicitly
+# Create required folder
 RUN mkdir -p /app/scraped_data
 
 # Install Python dependencies
 RUN pip install --upgrade pip \
- && pip install streamlit \
  && pip install -r requirements.txt \
- && pip install playwright && playwright install --with-deps
+ && pip install streamlit
 
-# Expose Streamlit port
+# Expose Streamlit default port
 EXPOSE 8501
 
-# Launch Streamlit app
+# Start Streamlit app
 CMD ["streamlit", "run", "streamlit_app.py", "--server.port=8501", "--server.address=0.0.0.0"]
