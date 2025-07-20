@@ -18,22 +18,29 @@ MAX_FLIGHTS = 3
 async def scrape_google_flights(url):
     results = []
     os.makedirs("scraped_data", exist_ok=True)
-    original_url = url  # used to reload search page
+    original_url = url
 
     async with async_playwright() as p:
         browser = await p.chromium.launch(
-        headless=True,
-        args=[
-          "--no-sandbox",
-          "--disable-setuid-sandbox",
-          "--disable-dev-shm-usage",
-        ],
+            headless=True,
+            args=[
+                "--no-sandbox",
+                "--disable-setuid-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-gpu"
+            ]
         )
 
         context = await browser.new_context()
         page = await context.new_page()
-        await page.goto(original_url)
-        await page.wait_for_selector("li.pIav2d", timeout=20000)
+
+        try:
+            await page.goto(original_url, wait_until="domcontentloaded", timeout=60000)
+            await page.wait_for_selector("li.pIav2d", timeout=30000)
+        except Exception as e:
+            safe_print(f"[❌] Initial page load failed: {e}")
+            await browser.close()
+            return
 
         flight_cards = await page.locator("li.pIav2d").all()
         safe_print(f"[INFO] Found {len(flight_cards)} flights. Scraping first {min(len(flight_cards), MAX_FLIGHTS)}...")
@@ -85,6 +92,7 @@ async def scrape_google_flights(url):
             except Exception as e:
                 safe_print(f"[⚠️] Failed to parse flight {i+1}: {e}")
 
+        # Visit each flight for booking link
         for flight in results:
             try:
                 index = flight["flight_index"]
@@ -109,13 +117,13 @@ async def scrape_google_flights(url):
                 clk_redirect_url = "N/A"
                 new_page = None
 
+                def on_new_page(page_obj):
+                    nonlocal new_page
+                    new_page = page_obj
+
+                context.on("page", on_new_page)
+
                 try:
-                    def on_new_page(page_obj):
-                        nonlocal new_page
-                        new_page = page_obj
-
-                    context.on("page", on_new_page)
-
                     continue_btns = page.get_by_role("button", name=re.compile(r"^Continue to book with "))
                     first_btn = continue_btns.nth(0)
                     await first_btn.wait_for(timeout=10000)
@@ -140,37 +148,30 @@ async def scrape_google_flights(url):
                     else:
                         if "google.com" not in page.url:
                             final_booking_url = page.url
-                            safe_print("🌍 Booking loaded in same tab.")
                         else:
                             safe_print("⚠️ Booking link not found — still on Google.")
 
                     flight["booking_link"] = final_booking_url
-                    if final_booking_url != "N/A":
-                        safe_print(f"🌍 Booking link: {final_booking_url}")
-                    else:
-                        safe_print("⚠️ Final booking URL not captured.")
+                    safe_print(f"🌍 Booking link: {final_booking_url}")
 
                 except Exception as e:
-                    safe_print(f"[⚠️] Could not find or click Continue: {e}")
+                    safe_print(f"[⚠️] Could not complete booking link flow: {e}")
+
                 finally:
-                    context.remove_listener("page", on_new_page)
+                    context.off("page", on_new_page)
 
-                # ✅ Go back by reloading original URL
-                try:
-                    safe_print("🔁 Reloading original flight list page...")
-                    await page.goto(original_url, wait_until="domcontentloaded")
-                    await page.wait_for_selector("li.pIav2d", timeout=10000)
-                    flight_cards = await page.locator("li.pIav2d").all()
-                    safe_print("✅ Reloaded flight list")
-                except Exception as e:
-                    safe_print(f"[❌] Could not reload flight list: {e}")
-                    
+                # Go back to flight list
+                safe_print("🔁 Reloading original flight list page...")
+                await page.goto(original_url, wait_until="domcontentloaded", timeout=30000)
+                await page.wait_for_selector("li.pIav2d", timeout=20000)
+                flight_cards = await page.locator("li.pIav2d").all()
+                safe_print("✅ Reloaded flight list")
 
             except Exception as e:
                 safe_print(f"[❌] Failed to process flight {flight['flight_index']+1}: {e}")
-                safe_print("🔁 Reloading original flight list page...")
-                await page.goto(original_url, wait_until="domcontentloaded")
-                await page.wait_for_selector("li.pIav2d", timeout=10000)
+                safe_print("🔁 Attempting reload...")
+                await page.goto(original_url, wait_until="domcontentloaded", timeout=30000)
+                await page.wait_for_selector("li.pIav2d", timeout=20000)
                 flight_cards = await page.locator("li.pIav2d").all()
                 safe_print("✅ Reloaded flight list")
 
