@@ -34,12 +34,18 @@ def _apply_four_plus_rating_filter(driver):
         print(f"[WARN] Could not apply '4+ rating' filter: {e}")
 
 def scrape_google_hotels(location_name: str, max_hotels: int = 5, currency: str = "USD"):
+    import tempfile
+
     options = ChromeOptions()
-    # options.add_argument("--headless=new")  # Uncomment for headless mode
+    options.add_argument("--headless=new")
     options.add_argument("--disable-gpu")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
-    driver = webdriver.Chrome(options=options)
+    
+    # ✅ Assign a unique temporary user data dir per session
+    user_data_dir = tempfile.mkdtemp()
+    options.add_argument(f"--user-data-dir={user_data_dir}")
+
 
     base_url = f"https://www.google.com/travel/hotels/{location_name}?q={location_name}&currency={currency}"
     print(f"[INFO] Loading URL: {base_url}")
